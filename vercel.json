@@ -1,13 +1,17 @@
 {
-  "buildCommand": "ng build --configuration production --base-href /",
+  "version": 2,
+  "public": false,
+  "buildCommand": "npm run build",
   "outputDirectory": "dist/angular-primeng/browser",
   "installCommand": "npm install",
-  "cleanUrls": true,
-  "trailingSlash": false,
-  "rewrites": [
+  "routes": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|json))",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }
