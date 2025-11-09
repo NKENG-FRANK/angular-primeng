@@ -1,11 +1,13 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "ng build --configuration production --base-href /",
   "outputDirectory": "dist/angular-primeng/browser",
   "installCommand": "npm install",
+  "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
