@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DrawerModule } from 'primeng/drawer';
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { RippleModule } from 'primeng/ripple';
 import { StyleClassModule } from 'primeng/styleclass';
+import { TableauComponent } from '../tableau/tableau';
 
+// Tableau Component (you can move this to a separate file later)
 @Component({
   selector: 'app-landing',
   standalone: true,
@@ -15,7 +17,8 @@ import { StyleClassModule } from 'primeng/styleclass';
     ButtonModule,
     AvatarModule,
     RippleModule,
-    StyleClassModule
+    StyleClassModule,
+    TableauComponent
   ],
   template: `
     <div class="landing-layout">
@@ -46,240 +49,86 @@ import { StyleClassModule } from 'primeng/styleclass';
 
           <!-- Scrollable Menu Content -->
           <div class="sidebar-menu">
-            <!-- Favorites Section -->
+            <!-- Navigation Items -->
             <ul class="list-none p-4 m-0">
               <li>
-                <div
-                  pRipple
-                  pStyleClass="@next"
-                  enterFromClass="hidden"
-                  enterActiveClass="animate-slidedown"
-                  leaveToClass="hidden"
-                  leaveActiveClass="animate-slideup"
-                  class="p-3 flex items-center justify-between text-surface-300 cursor-pointer hover:text-white transition-colors"
+                <a 
+                  pRipple 
+                  class="flex items-center cursor-pointer px-4 py-3 rounded-lg text-surface-100 hover:bg-white/10 duration-150 transition-colors"
+                  [class.active]="activeComponent() === 'tableau'"
+                  (click)="loadComponent('tableau')"
                 >
-                  <span class="font-semibold text-xs tracking-wider">FAVORITES</span>
-                  <i class="pi pi-chevron-down text-xs"></i>
-                </div>
-                <ul class="list-none p-0 m-0 overflow-hidden">
-                  <li>
-                    <a pRipple class="flex items-center cursor-pointer px-4 py-3 rounded-lg text-surface-100 hover:bg-white/10 duration-150 transition-colors">
-                      <i class="pi pi-home mr-3"></i>
-                      <span class="font-medium">Dashboard</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a pRipple class="flex items-center cursor-pointer px-4 py-3 rounded-lg text-surface-100 hover:bg-white/10 duration-150 transition-colors">
-                      <i class="pi pi-bookmark mr-3"></i>
-                      <span class="font-medium">Bookmarks</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      pRipple
-                      pStyleClass="@next"
-                      enterFromClass="hidden"
-                      enterActiveClass="animate-slidedown"
-                      leaveToClass="hidden"
-                      leaveActiveClass="animate-slideup"
-                      class="flex items-center cursor-pointer px-4 py-3 rounded-lg text-surface-100 hover:bg-white/10 duration-150 transition-colors"
-                    >
-                      <i class="pi pi-chart-line mr-3"></i>
-                      <span class="font-medium">Reports</span>
-                      <i class="pi pi-chevron-down ml-auto text-sm"></i>
-                    </a>
-                    <ul class="list-none py-0 pl-4 pr-0 m-0 hidden overflow-y-hidden transition-all duration-[400ms] ease-in-out">
-                      <li>
-                        <a
-                          pRipple
-                          pStyleClass="@next"
-                          enterFromClass="hidden"
-                          enterActiveClass="animate-slidedown"
-                          leaveToClass="hidden"
-                          leaveActiveClass="animate-slideup"
-                          class="flex items-center cursor-pointer px-4 py-3 rounded-lg text-surface-100 hover:bg-white/10 duration-150 transition-colors"
-                        >
-                          <i class="pi pi-chart-line mr-3"></i>
-                          <span class="font-medium">Revenue</span>
-                          <i class="pi pi-chevron-down ml-auto text-sm"></i>
-                        </a>
-                        <ul class="list-none py-0 pl-4 pr-0 m-0 hidden overflow-y-hidden transition-all duration-[400ms] ease-in-out">
-                          <li>
-                            <a pRipple class="flex items-center cursor-pointer px-4 py-3 rounded-lg text-surface-100 hover:bg-white/10 duration-150 transition-colors">
-                              <i class="pi pi-table mr-3"></i>
-                              <span class="font-medium">View</span>
-                            </a>
-                          </li>
-                          <li>
-                            <a pRipple class="flex items-center cursor-pointer px-4 py-3 rounded-lg text-surface-100 hover:bg-white/10 duration-150 transition-colors">
-                              <i class="pi pi-search mr-3"></i>
-                              <span class="font-medium">Search</span>
-                            </a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li>
-                        <a pRipple class="flex items-center cursor-pointer px-4 py-3 rounded-lg text-surface-100 hover:bg-white/10 duration-150 transition-colors">
-                          <i class="pi pi-chart-line mr-3"></i>
-                          <span class="font-medium">Expenses</span>
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <a pRipple class="flex items-center cursor-pointer px-4 py-3 rounded-lg text-surface-100 hover:bg-white/10 duration-150 transition-colors">
-                      <i class="pi pi-users mr-3"></i>
-                      <span class="font-medium">Team</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a pRipple class="flex items-center cursor-pointer px-4 py-3 rounded-lg text-surface-100 hover:bg-white/10 duration-150 transition-colors">
-                      <i class="pi pi-comments mr-3"></i>
-                      <span class="font-medium">Messages</span>
-                      <span class="inline-flex items-center justify-center ml-auto bg-red-500 text-white rounded-full text-xs font-bold min-w-[1.5rem] h-6 px-2">3</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a pRipple class="flex items-center cursor-pointer px-4 py-3 rounded-lg text-surface-100 hover:bg-white/10 duration-150 transition-colors">
-                      <i class="pi pi-calendar mr-3"></i>
-                      <span class="font-medium">Calendar</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a pRipple class="flex items-center cursor-pointer px-4 py-3 rounded-lg text-surface-100 hover:bg-white/10 duration-150 transition-colors">
-                      <i class="pi pi-cog mr-3"></i>
-                      <span class="font-medium">Settings</span>
-                    </a>
-                  </li>
-                </ul>
+                  <i class="pi pi-home mr-3"></i>
+                  <span class="font-medium">Tableau</span>
+                </a>
               </li>
-            </ul>
-
-            <!-- Application Section -->
-            <ul class="list-none p-4 m-0">
               <li>
-                <div
-                  pRipple
-                  pStyleClass="@next"
-                  enterFromClass="hidden"
-                  enterActiveClass="animate-slidedown"
-                  leaveToClass="hidden"
-                  leaveActiveClass="animate-slideup"
-                  class="p-3 flex items-center justify-between text-surface-300 cursor-pointer hover:text-white transition-colors"
+                <a 
+                  pRipple 
+                  class="flex items-center cursor-pointer px-4 py-3 rounded-lg text-surface-100 hover:bg-white/10 duration-150 transition-colors"
+                  [class.active]="activeComponent() === 'analytics'"
+                  (click)="loadComponent('analytics')"
                 >
-                  <span class="font-semibold text-xs tracking-wider">APPLICATION</span>
-                  <i class="pi pi-chevron-down text-xs"></i>
-                </div>
-                <ul class="list-none p-0 m-0 overflow-hidden">
-                  <li>
-                    <a pRipple class="flex items-center cursor-pointer px-4 py-3 rounded-lg text-surface-100 hover:bg-white/10 duration-150 transition-colors">
-                      <i class="pi pi-folder mr-3"></i>
-                      <span class="font-medium">Projects</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a pRipple class="flex items-center cursor-pointer px-4 py-3 rounded-lg text-surface-100 hover:bg-white/10 duration-150 transition-colors">
-                      <i class="pi pi-chart-bar mr-3"></i>
-                      <span class="font-medium">Performance</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a pRipple class="flex items-center cursor-pointer px-4 py-3 rounded-lg text-surface-100 hover:bg-white/10 duration-150 transition-colors">
-                      <i class="pi pi-cog mr-3"></i>
-                      <span class="font-medium">Settings</span>
-                    </a>
-                  </li>
-                </ul>
+                  <i class="pi pi-chart-line mr-3"></i>
+                  <span class="font-medium">Analytics</span>
+                </a>
+              </li>
+              <li>
+                <a 
+                  pRipple 
+                  class="flex items-center cursor-pointer px-4 py-3 rounded-lg text-surface-100 hover:bg-white/10 duration-150 transition-colors"
+                  [class.active]="activeComponent() === 'reports'"
+                  (click)="loadComponent('reports')"
+                >
+                  <i class="pi pi-file mr-3"></i>
+                  <span class="font-medium">Reports</span>
+                </a>
+              </li>
+              <li>
+                <a 
+                  pRipple 
+                  class="flex items-center cursor-pointer px-4 py-3 rounded-lg text-surface-100 hover:bg-white/10 duration-150 transition-colors"
+                  [class.active]="activeComponent() === 'settings'"
+                  (click)="loadComponent('settings')"
+                >
+                  <i class="pi pi-cog mr-3"></i>
+                  <span class="font-medium">Settings</span>
+                </a>
               </li>
             </ul>
-          </div>
-
-          <!-- Footer Profile -->
-          <div class="sidebar-footer">
-            <div class="border-t border-white/10 pt-4">
-              <a pRipple class="flex items-center cursor-pointer p-4 gap-3 rounded-lg text-white hover:bg-white/10 duration-150 transition-colors">
-                <p-avatar 
-                  image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" 
-                  shape="circle" 
-                  [style]="{ width: '40px', height: '40px' }"
-                />
-                <div class="flex flex-col flex-1">
-                  <span class="font-bold text-sm">Amy Elsner</span>
-                  <span class="text-xs text-surface-300">Administrator</span>
-                </div>
-                <i class="pi pi-sign-out text-surface-300 hover:text-white transition-colors"></i>
-              </a>
-            </div>
           </div>
         </div>
       </aside>
 
       <!-- Main Content Area -->
       <main class="main-content">
-        <div class="content-header">
-          <h1>Welcome to Your Dashboard</h1>
-          <div class="header-actions">
-            <p-button 
-              icon="pi pi-bell" 
-              [rounded]="true"
-              [text]="true"
-              severity="secondary"
-              [badge]="'5'"
-              badgeSeverity="danger"
-            />
-            <p-button 
-              icon="pi pi-search" 
-              [rounded]="true"
-              [text]="true"
-              severity="secondary"
-            />
+        @if (activeComponent() === 'tableau') {
+          <app-tableau />
+        } @else if (activeComponent() === 'analytics') {
+          <div class="content-placeholder">
+            <i class="pi pi-chart-line"></i>
+            <h2>Analytics</h2>
+            <p>Analytics content will be displayed here</p>
           </div>
-        </div>
-        
-        <div class="content-body">
-          <div class="content-card">
-            <h2>Dashboard Content</h2>
-            <p>Your main content goes here. The sidebar is now fixed on the left side with all the original navigation items.</p>
+        } @else if (activeComponent() === 'reports') {
+          <div class="content-placeholder">
+            <i class="pi pi-file"></i>
+            <h2>Reports</h2>
+            <p>Reports content will be displayed here</p>
           </div>
-
-          <div class="content-grid">
-            <div class="grid-card">
-              <div class="card-icon">
-                <i class="pi pi-users"></i>
-              </div>
-              <h3>Total Users</h3>
-              <p class="stat">1,234</p>
-              <span class="trend positive">+12% from last month</span>
-            </div>
-
-            <div class="grid-card">
-              <div class="card-icon">
-                <i class="pi pi-chart-line"></i>
-              </div>
-              <h3>Revenue</h3>
-              <p class="stat">$45,678</p>
-              <span class="trend positive">+8% from last month</span>
-            </div>
-
-            <div class="grid-card">
-              <div class="card-icon">
-                <i class="pi pi-shopping-cart"></i>
-              </div>
-              <h3>Orders</h3>
-              <p class="stat">567</p>
-              <span class="trend negative">-3% from last month</span>
-            </div>
-
-            <div class="grid-card">
-              <div class="card-icon">
-                <i class="pi pi-star"></i>
-              </div>
-              <h3>Reviews</h3>
-              <p class="stat">892</p>
-              <span class="trend positive">+15% from last month</span>
-            </div>
+        } @else if (activeComponent() === 'settings') {
+          <div class="content-placeholder">
+            <i class="pi pi-cog"></i>
+            <h2>Settings</h2>
+            <p>Settings content will be displayed here</p>
           </div>
-        </div>
+        } @else {
+          <div class="content-placeholder welcome">
+            <i class="pi pi-home"></i>
+            <h2>Welcome to Your Dashboard</h2>
+            <p>Select an item from the sidebar to get started</p>
+          </div>
+        }
       </main>
     </div>
   `,
@@ -344,152 +193,68 @@ import { StyleClassModule } from 'primeng/styleclass';
       background: rgba(255, 255, 255, 0.3);
     }
 
-    .sidebar-footer {
-      padding: 1rem;
-      margin-top: auto;
+    .sidebar-menu a.active {
+      background: rgba(255, 255, 255, 0.15);
+      font-weight: 600;
     }
 
     /* Main Content */
     .main-content {
       margin-left: 280px;
       flex: 1;
-      padding: 2rem;
       min-height: 100vh;
+      background: #f8fafc;
     }
 
-    .content-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-      background: white;
-      padding: 1.5rem 2rem;
-      border-radius: 16px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    }
-
-    .content-header h1 {
-      margin: 0;
-      color: #1a1a2e;
-      font-size: 1.75rem;
-      font-weight: 700;
-    }
-
-    .header-actions {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .content-body {
+    .content-placeholder {
       display: flex;
       flex-direction: column;
-      gap: 2rem;
-    }
-
-    .content-card {
-      background: white;
-      padding: 2rem;
-      border-radius: 16px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    }
-
-    .content-card h2 {
-      margin: 0 0 1rem 0;
-      color: #1a1a2e;
-      font-size: 1.5rem;
-      font-weight: 700;
-    }
-
-    .content-card p {
-      margin: 0;
-      color: #475569;
-      font-size: 1rem;
-      line-height: 1.6;
-    }
-
-    .content-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .grid-card {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 16px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .grid-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    }
-
-    .card-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 1rem;
+      min-height: 100vh;
+      padding: 2rem;
+      text-align: center;
     }
 
-    .card-icon i {
-      font-size: 1.5rem;
-      color: white;
+    .content-placeholder i {
+      font-size: 4rem;
+      color: #667eea;
+      margin-bottom: 1.5rem;
     }
 
-    .grid-card h3 {
-      margin: 0 0 0.5rem 0;
-      color: #64748b;
-      font-size: 0.875rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .stat {
-      margin: 0 0 0.5rem 0;
-      color: #1a1a2e;
+    .content-placeholder h2 {
+      margin: 0 0 1rem 0;
       font-size: 2rem;
       font-weight: 700;
+      color: #1a1a2e;
     }
 
-    .trend {
-      font-size: 0.875rem;
-      font-weight: 500;
+    .content-placeholder p {
+      margin: 0;
+      font-size: 1.125rem;
+      color: #64748b;
     }
 
-    .trend.positive {
-      color: #10b981;
-    }
-
-    .trend.negative {
-      color: #ef4444;
+    .content-placeholder.welcome {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
     }
 
     @media (prefers-color-scheme: dark) {
-      .landing-layout {
+      .landing-layout,
+      .main-content {
         background: #0f172a;
       }
 
-      .content-header,
-      .content-card,
-      .grid-card {
-        background: #1e293b;
-      }
-
-      .content-header h1,
-      .content-card h2,
-      .stat {
+      .content-placeholder h2 {
         color: #ffffff;
       }
 
-      .content-card p {
+      .content-placeholder p {
         color: #cbd5e1;
+      }
+
+      .content-placeholder.welcome {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
       }
     }
 
@@ -502,11 +267,13 @@ import { StyleClassModule } from 'primeng/styleclass';
       .main-content {
         margin-left: 0;
       }
-
-      .content-grid {
-        grid-template-columns: 1fr;
-      }
     }
   `
 })
-export class Landing {}
+export class Landing {
+  activeComponent = signal<string>('');
+
+  loadComponent(component: string) {
+    this.activeComponent.set(component);
+  }
+}
