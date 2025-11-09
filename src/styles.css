@@ -1,0 +1,9 @@
+/* src/styles.css */
+
+/* PrimeIcons for icons (used by buttons, inputs, etc.) */
+@import "primeicons/primeicons.css";
+
+/* Optional: PrimeFlex if you want utility classes for layout */
+@import "primeflex/primeflex.css";
+
+/* No need to import primeng.min.css or theme CSS manually in v20 */
